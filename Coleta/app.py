@@ -15,15 +15,10 @@ def create_point():
 @app.route('/search-results', methods=['POST'])
 def search_results():
     search_form = request.form.get('search')
-    string_retorno = ""
-    lista_pontos = db.search_and_get_by_city(search_form)
-    for i in lista_pontos:
-        string_result = ""
-        for j in i:
-            string_result += str(j) + ", "
-        string_retorno += string_result + "<br>" 
+    possible_points = db.search_and_get_by_city(search_form)
+    dic_of_points = db.make_dic_list(possible_points)
 
-    return string_retorno
+    return render_template('search-results.html', cards=dic_of_points)
 
 
 # def search_results():
@@ -49,6 +44,9 @@ def submit():
 
     city = city.replace("'", "")
     city = city.replace('"', '')
+
+    items = items.replace(" ", "")
+    items = items.replace(",", "")
 
     # Adding to the DB
     db.add_into_pontoColeta(name, address, address2, state, city, items)

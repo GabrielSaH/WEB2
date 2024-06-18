@@ -70,13 +70,20 @@ def search_and_get_by_city(city: str):
     cur.execute(f"SELECT * FROM pontoColeta WHERE CITY='{city}'")
     return cur.fetchall()
 
+def make_dic_list(lista: list):
+    list_return = []
+    for card in lista:
+        temp_dic = {
+            'state':  card[1],
+            'city':   card[2],
+            'tags':   [int(i) for i in card[3]],
+            'name':   card[5],
+            'addr1':  card[6],
+            'addr2':  card[7]
+        }
+        list_return.append(temp_dic)
 
-print(search_and_get_by_city("Florianópolis"))
-lista = search_by_city("Florianópolis")
-print(lista)
-
-for i in lista:
-    print(get_info(i))
+    return list_return
 
 create_tables()
 # populate_test()
